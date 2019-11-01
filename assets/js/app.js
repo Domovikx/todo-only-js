@@ -6,7 +6,7 @@
 
     let id = 0;
 
-    const state = {
+    let state = {
       countsValue: [5, 6, 7],
       searchText: '',
       additionText: '',
@@ -23,6 +23,22 @@
     }
 
 
+    getLocalStage();
+
+    function getLocalStage() {
+      window.onload = function () {
+        if (localStorage.getItem('state')) {
+          state = JSON.parse(localStorage.getItem('state'));
+          render(state);
+        }
+      }
+    }
+
+    function setLocalStage() {
+      localStorage.setItem('state', JSON.stringify(state));
+    }
+
+
     addition();
 
     function addition() {
@@ -35,6 +51,7 @@
         if (text.value === '') return;
         state.todoDate.unshift(createNewTodo(text.value));
         text.value = '';
+        setLocalStage();
         render(state);
       }
     }
