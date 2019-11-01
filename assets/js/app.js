@@ -4,8 +4,6 @@
 
   function processing() {
 
-    let id = 0;
-
     let state = {
       countsValue: [5, 6, 7],
       searchText: '',
@@ -51,18 +49,29 @@
         if (text.value === '') return;
         state.todoDate.unshift(createNewTodo(text.value));
         text.value = '';
+        counts();
+
         setLocalStage();
         render(state);
       }
+
+
     }
 
+
+    counts();
+
+    function counts() {
+      const arr = state.todoDate;
+      const countAll = arr.length;
+      state.countsValue[0] = countAll;
+    }
 
     function createNewTodo(text) {
       return {
         text,
         important: false,
         done: false,
-        id: id++,
       }
     }
 
@@ -72,9 +81,15 @@
 
   function render(state) {
 
-    todo();
 
-    function todo() {
+    (function counts() {
+      const element = document.getElementById('counts');
+      const arr = [...state.countsValue];
+      element.innerHTML = `${arr.join(' ')}`;
+    })();
+
+
+    (function todo() {
       const element = document.getElementById('todo__list');
       const arrTodo = state.todoDate;
 
@@ -98,7 +113,7 @@
          </li>
          `;
       }
-    }
+    })();
 
   }
 
