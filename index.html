@@ -2,16 +2,66 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>ToDo List - only js</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ToDo List - only js</title>
 </head>
 
+
 <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <script src="assets/js/app.js"></script>
+
+  <header>
+    <h1>ToDo list (only js)</h1>
+    <a href="https://vk.com/domovikx" target="_blank" rel="noopener noreferrer">VK</a>
+    <a href="https://github.com/Domovikx" target="_blank" rel="noopener noreferrer">GH</a>
+  </header>
+
+
+  <main>
+
+    <section>
+      <h2 hidden>counts box</h2>
+      <p>items: <span>1 2 3</span></p>
+    </section>
+
+    <section>
+      <h2 hidden>search box</h2>
+      <form>
+        <input type="text" name="search" id="search">
+        <input type="submit" value="search">
+      </form>
+    </section>
+
+    <section>
+      <h2 hidden>add box</h2>
+      <form>
+        <input type="text" name="add" id="add">
+        <input type="submit" value="add">
+      </form>
+    </section>
+
+    <section>
+      <h2>todo list box</h2>
+      <ul>
+        <li>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus veniam natus, ea dolor, dolorem non quae
+            consequatur, aut perspiciatis quibusdam quas fugit? Quidem minima, modi commodi ad corrupti non quas.</p>
+          <button>important</button>
+          <button>done</button>
+          <button>del</button>
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>@DomovikX</p>
+  </footer>
+
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <script src="assets/js/app.js"></script>
 </body>
 
 </html>
