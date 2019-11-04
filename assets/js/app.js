@@ -5,7 +5,11 @@
   function processing() {
 
     let state = {
-      countsValue: [5, 6, 7],
+      countsValue: {
+        countAll: 9,
+        countImportant: 6,
+        countDone: 3,
+      },
       searchText: '',
       additionText: '',
       todoDate: [
@@ -24,6 +28,7 @@
     window.onload = () => {
       if (localStorage.getItem('state')) {
         state = JSON.parse(localStorage.getItem('state'));
+        counts();
         render(state);
       }
     }
@@ -51,12 +56,23 @@
     }
 
 
-    counts();
-
     function counts() {
       const arr = state.todoDate;
       const countAll = arr.length;
-      state.countsValue[0] = countAll;
+      let countImportant = 0;
+      let countDone = 0;
+
+      state.countsValue.countAll = countAll;
+
+      for (let i = 0; i < arr.length; i++) {
+        countImportant += state.todoDate[i].important + 0;
+      }
+      state.countsValue.countImportant = countImportant;
+
+      for (let i = 0; i < arr.length; i++) {
+        countDone += state.todoDate[i].done + 0;
+      }
+      state.countsValue.countDone = countDone;
     }
 
 
@@ -106,7 +122,7 @@
       function done(id, arr) {
         for (let i = 0; i < arr.length; i++) {
           if (id === arr[i].id) {
-            arr[i].important = !arr[i].important;
+            arr[i].done = !arr[i].done;
             counts();
             render(state);
           }
@@ -133,8 +149,10 @@
 
     (function counts() {
       const element = document.getElementById('counts');
-      const arr = [...state.countsValue];
-      element.innerHTML = `${arr.join(' ')}`;
+      element.innerHTML = `
+      ${state.countsValue.countAll} | 
+      ${state.countsValue.countImportant} | 
+      ${state.countsValue.countDone}`;
     })();
 
 

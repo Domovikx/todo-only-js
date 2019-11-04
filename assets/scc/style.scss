@@ -1,0 +1,27 @@
+@import 'reset';
+@import 'fonts';
+
+body {
+  background: #2a2a2a;
+}
+
+.btn {
+  background: #ffba2e;
+  transition: .2s;
+
+  &:hover {
+    background: #fee951;
+  }
+}
+
+.btn-important {
+  &-active {
+    background: #ef5218;
+  }
+}
+
+.btn-done {
+  &-active {
+    background: #9ec93e;
+  }
+}
