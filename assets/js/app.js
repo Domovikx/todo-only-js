@@ -186,15 +186,27 @@
         const id = obj.id;
         let btnImportant = '';
         let btnDone = '';
+        let textImportant = '';
+        let textDone = '';
 
-        obj.important ?
-          btnImportant = 'btn-important-active' : btnImportant = 'btn-important';
-        obj.done ?
-          btnDone = 'btn-done-active' : btnDone = 'btn-done';
+        if (obj.important) {
+          btnImportant = 'btn-important-active';
+          textImportant = 'important';
+        } else {
+          btnImportant = 'btn-important';
+        }
+
+        if (obj.done) {
+          btnDone = 'btn-done-active';
+          textDone = 'done';
+        } else {
+          btnDone = 'btn-done';
+        }
+
 
         element.innerHTML += `
          <li class="todo__item item" id=${id}>
-         <p class="item__text">${text}</p>
+         <p class="item__text ${textImportant} ${textDone}">${text}</p>
          <button class="btn ${btnImportant}" value="important">important</button>
          <button class="btn ${btnDone}" value="done">done</button>
          <button class="btn btn-del" value="del">del</button>

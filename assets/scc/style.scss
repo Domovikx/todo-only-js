@@ -2,12 +2,26 @@
 @import 'fonts';
 
 body {
+  color: white;
   background: #2a2a2a;
+  font-family: 'Marmelad', sans-serif;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
 .btn {
+  font-family: 'Marmelad', sans-serif;
   background: #ffba2e;
   transition: .2s;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: #2a2a2a;
+
+  border: 0;
+  border-radius: 50%;
+  display: flex;
+  align-self: center;
+  width: fit-content;
 
   &:hover {
     background: #fee951;
@@ -24,4 +38,90 @@ body {
   &-active {
     background: #9ec93e;
   }
+}
+
+.header {
+  display: flex;
+  padding: 10px 20px;
+
+  &__title {
+    margin-right: auto;
+  }
+
+  .btn {
+    margin-left: 10px;
+  }
+}
+
+.main {
+  padding: 10px;
+}
+
+.search,
+.addition {
+  margin: 10px 0;
+}
+
+.form {
+  display: flex;
+
+  .form__input-text {
+    width: 100%;
+    margin-right: 10px;
+    padding: 0 5px;
+    border: 0;
+  }
+}
+
+.todo__list {
+  text-align: center;
+
+  .todo__item {
+    list-style-type: none;
+    display: inline-grid;
+    grid-template-columns: repeat(4, auto);
+    grid-template-rows: repeat(2, auto);
+    padding: 10px;
+
+    .item__text {
+      grid-column: 1 / span 4;
+      text-align: left;
+    }
+
+    .btn {
+      margin: 5px;
+    }
+
+    .btn-important,
+    .btn-important-active {
+      grid-column: 2;
+    }
+
+    .btn-done,
+    .btn-done-active {
+      grid-column: 3;
+    }
+
+    .btn-del {
+      grid-column: 4;
+    }
+
+    &:hover {
+      transition: .2s;
+      background: #222222;
+    }
+
+    .item__text.important {
+      color: lightcoral;
+    }
+
+    .item__text.done {
+      text-decoration: line-through;
+    }
+  }
+}
+
+.footer {
+  text-align: right;
+  margin: 5px 10px;
 }
