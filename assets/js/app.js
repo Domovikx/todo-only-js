@@ -21,20 +21,16 @@
     }
 
 
-    getLocalStage();
-
-    function getLocalStage() {
-      window.onload = function () {
-        if (localStorage.getItem('state')) {
-          state = JSON.parse(localStorage.getItem('state'));
-          render(state);
-        }
+    window.onload = () => {
+      if (localStorage.getItem('state')) {
+        state = JSON.parse(localStorage.getItem('state'));
+        render(state);
       }
     }
 
-    function setLocalStage() {
+    window.onunload = () => {
       localStorage.setItem('state', JSON.stringify(state));
-    }
+    };
 
 
     addition();
@@ -50,12 +46,8 @@
         state.todoDate.unshift(createNewTodo(text.value));
         text.value = '';
         counts();
-
-        setLocalStage();
         render(state);
       }
-
-
     }
 
 
@@ -67,8 +59,55 @@
       state.countsValue[0] = countAll;
     }
 
+
+    (function listEvents() {
+      const element = document.getElementById('todo__list');
+      element.addEventListener('click', (event) => {
+        const value = event.target.value;
+        const id = event.target.parentNode.id;
+
+        switch (value) {
+          case 'del':
+            del(id);
+            break;
+          case 'important':
+            important(id);
+            break;
+          case 'done':
+            done(id);
+            break;
+
+          default:
+            break;
+        }
+      });
+
+      function del(id) {
+        const arr = state.todoDate;
+        for (let i = 0; i < arr.length; i++) {
+          const elementID = arr[i].id;
+          if (id === elementID) {
+            arr.splice(i, 1);
+            counts();
+            render(state);
+          }
+        }
+      }
+
+      function important(id) {
+
+      }
+
+      function done(id) {
+
+      }
+    })();
+
+
     function createNewTodo(text) {
+      const doId = () => Math.random().toString(32).substr(2, 16);
       return {
+        id: doId(),
         text,
         important: false,
         done: false,
@@ -80,7 +119,6 @@
 
 
   function render(state) {
-
 
     (function counts() {
       const element = document.getElementById('counts');
@@ -96,6 +134,7 @@
       element.innerHTML = '';
       for (const obj of arrTodo) {
         const text = obj.text;
+        const id = obj.id;
         let btnImportant = '';
         let btnDone = '';
 
@@ -105,11 +144,11 @@
           btnDone = 'btn-done-active' : btnDone = 'btn-done';
 
         element.innerHTML += `
-         <li class="todo__item item">
+         <li class="todo__item item" id=${id}>
          <p class="item__text">${text}</p>
-         <button class="btn ${btnImportant}">important</button>
-         <button class="btn ${btnDone}">done</button>
-         <button class="btn btn-del">del</button>
+         <button class="btn ${btnImportant}" value="important">important</button>
+         <button class="btn ${btnDone}" value="done">done</button>
+         <button class="btn btn-del" value="del">del</button>
          </li>
          `;
       }
