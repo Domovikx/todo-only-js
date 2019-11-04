@@ -17,18 +17,15 @@
         createNewTodo('456'),
         createNewTodo('7 8 9'),
       ],
-      visibility: {
-        all: true,
-        important: false,
-        done: false,
-      }
     }
 
 
     window.onload = () => {
       if (localStorage.getItem('state')) {
         state = JSON.parse(localStorage.getItem('state'));
+        addition();
         counts();
+        search();
         render(state);
       }
     }
@@ -37,8 +34,6 @@
       localStorage.setItem('state', JSON.stringify(state));
     };
 
-
-    addition();
 
     function addition() {
       const element = document.getElementById('addition__form');
@@ -52,6 +47,31 @@
         text.value = '';
         counts();
         render(state);
+      }
+    }
+
+
+    function search() {
+      const element = document.getElementById('search__form');
+      element.addEventListener('submit', eventSubmit);
+
+      function eventSubmit(event) {
+        event.preventDefault();
+        const search = document.getElementById('search');
+        if (search.value === '') return render(state);
+        const searchText = search.value.toLowerCase();
+        const filterTodoDate = state.todoDate.filter((obj) => (
+          obj.text
+          .toLowerCase()
+          .indexOf(searchText) !== -1
+        ))
+
+        const filterState = {
+          ...state
+        };
+        filterState.todoDate = filterTodoDate;
+
+        render(filterState);
       }
     }
 
