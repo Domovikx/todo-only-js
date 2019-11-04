@@ -65,16 +65,17 @@
       element.addEventListener('click', (event) => {
         const value = event.target.value;
         const id = event.target.parentNode.id;
+        const arr = state.todoDate;
 
         switch (value) {
           case 'del':
-            del(id);
+            del(id, arr);
             break;
           case 'important':
-            important(id);
+            important(id, arr);
             break;
           case 'done':
-            done(id);
+            done(id, arr);
             break;
 
           default:
@@ -82,11 +83,9 @@
         }
       });
 
-      function del(id) {
-        const arr = state.todoDate;
+      function del(id, arr) {
         for (let i = 0; i < arr.length; i++) {
-          const elementID = arr[i].id;
-          if (id === elementID) {
+          if (id === arr[i].id) {
             arr.splice(i, 1);
             counts();
             render(state);
@@ -94,12 +93,24 @@
         }
       }
 
-      function important(id) {
-
+      function important(id, arr) {
+        for (let i = 0; i < arr.length; i++) {
+          if (id === arr[i].id) {
+            arr[i].important = !arr[i].important;
+            counts();
+            render(state);
+          }
+        }
       }
 
-      function done(id) {
-
+      function done(id, arr) {
+        for (let i = 0; i < arr.length; i++) {
+          if (id === arr[i].id) {
+            arr[i].important = !arr[i].important;
+            counts();
+            render(state);
+          }
+        }
       }
     })();
 
