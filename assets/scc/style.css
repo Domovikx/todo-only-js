@@ -1,0 +1,148 @@
+@import url("https://fonts.googleapis.com/css?family=Marmelad&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  outline: none;
+}
+
+body {
+  color: white;
+  background: #2a2a2a;
+  font-family: 'Marmelad', sans-serif;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.btn {
+  font-family: 'Marmelad', sans-serif;
+  background: #ffba2e;
+  -webkit-transition: .2s;
+  transition: .2s;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: #2a2a2a;
+  border: 0;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-item-align: center;
+      align-self: center;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.btn:hover {
+  background: #fee951;
+}
+
+.btn-important-active {
+  background: #ef5218;
+}
+
+.btn-done-active {
+  background: #9ec93e;
+}
+
+.header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 10px 20px;
+}
+
+.header__title {
+  margin-right: auto;
+}
+
+.header .btn {
+  margin-left: 10px;
+}
+
+.main {
+  padding: 10px;
+}
+
+.search,
+.addition {
+  margin: 10px 0;
+}
+
+.form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.form .form__input-text {
+  width: 100%;
+  margin-right: 10px;
+  padding: 0 5px;
+  border: 0;
+}
+
+.todo__list {
+  text-align: center;
+}
+
+.todo__list .todo__item {
+  list-style-type: none;
+  display: -ms-inline-grid;
+  display: inline-grid;
+  -ms-grid-columns: (auto)[4];
+      grid-template-columns: repeat(4, auto);
+  -ms-grid-rows: (auto)[2];
+      grid-template-rows: repeat(2, auto);
+  padding: 10px;
+}
+
+.todo__list .todo__item .item__text {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 4;
+  grid-column: 1 / span 4;
+  text-align: left;
+}
+
+.todo__list .todo__item .btn {
+  margin: 5px;
+}
+
+.todo__list .todo__item .btn-important,
+.todo__list .todo__item .btn-important-active {
+  -ms-grid-column: 2;
+  grid-column: 2;
+}
+
+.todo__list .todo__item .btn-done,
+.todo__list .todo__item .btn-done-active {
+  -ms-grid-column: 3;
+  grid-column: 3;
+}
+
+.todo__list .todo__item .btn-del {
+  -ms-grid-column: 4;
+  grid-column: 4;
+}
+
+.todo__list .todo__item:hover {
+  -webkit-transition: .2s;
+  transition: .2s;
+  background: #222222;
+}
+
+.todo__list .todo__item .item__text.important {
+  color: lightcoral;
+}
+
+.todo__list .todo__item .item__text.done {
+  text-decoration: line-through;
+}
+
+.footer {
+  text-align: right;
+  margin: 5px 10px;
+}
+/*# sourceMappingURL=style.css.map */

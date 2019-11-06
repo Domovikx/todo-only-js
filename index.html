@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ToDo List - only js</title>
+  <link rel="stylesheet" href="assets/scc/style.css">
+</head>
+
+
+<body>
+
+  <header class="header">
+    <h1 class="header__title">ToDo list (only js)</h1>
+    <a class="header__btn btn" href="https://vk.com/domovikx" target="_blank" rel="noopener noreferrer">VK</a>
+    <a class="header__btn btn" href="https://github.com/Domovikx" target="_blank" rel="noopener noreferrer">GH</a>
+  </header>
+
+
+  <main class="main">
+
+    <section class="counts">
+      <h2 hidden>counts box</h2>
+      <p class="counts__text">items:
+        <span class="counts__value" id="counts">1 2 3</span>
+      </p>
+    </section>
+
+    <section class="search">
+      <h2 hidden>search box</h2>
+      <form class="search__form form" id="search__form">
+        <input class="form__input-text" type="text" name="search" id="search">
+        <input class="btn form__input-submit" type="submit" value="search">
+      </form>
+    </section>
+
+    <section class="addition">
+      <h2 hidden>addition box</h2>
+      <form class="addition__form form" id="addition__form">
+        <input class="form__input-text" type="text" name="add" id="add" required pattern="^(?!\s*$).+">
+        <input class="btn form__input-submit" type="submit" value="add">
+      </form>
+    </section>
+
+    <section class="todo">
+      <h2 hidden>todo list box</h2>
+      <ul class="todo__list" id="todo__list">
+        <li class="todo__item item">
+          <p class="item__text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus veniam natus, ea
+            dolor, dolorem non quae
+            consequatur, aut perspiciatis quibusdam quas fugit? Quidem minima, modi commodi ad corrupti non quas.</p>
+          <button class="btn btn-important">important</button>
+          <button class="btn btn-done">done</button>
+          <button class="btn btn-del" value="del">del</button>
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+
+  <footer class="footer">
+    <p class="footer__author">@DomovikX</p>
+  </footer>
+
+
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <script src="assets/js/app.js"></script>
+
+</body>
+
+</html>
