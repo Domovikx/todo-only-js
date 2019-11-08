@@ -1,48 +1,3 @@
-const view = {};
-
-const model = {};
-
-const controller = {};
-
-(function () {
-
-  const start = {
-
-    init: function () {
-      this.main();
-      this.control();
-      this.event();
-    },
-
-    main: function () {
-
-    },
-
-    control: function () {
-
-    },
-
-    event: function () {
-
-    },
-
-  };
-
-  start.init();
-
-})();
-
-
-
-
-
-
-
-
-
-
-
-
 (function app() {
 
   let state = {
@@ -146,8 +101,7 @@ const controller = {};
 
       for (let i = 0; i < arr.length; i++) {
         if (id === arr[i].id) {
-          if (eventValue === 'del') arr.splice(i, 1);
-          listEvents
+          if (eventValue === 'del') arr.splice(i, 1);listEvents
           if (eventValue === 'important') arr[i].important = !arr[i].important;
           if (eventValue === 'done') arr[i].done = !arr[i].done;
           counts();
