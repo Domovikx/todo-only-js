@@ -107,7 +107,23 @@ const model = {
     }
   },
 
+  editListItem: function ({
+    id,
+    occasion
+  }) {
+    const arr = this.state.todoDate;
+    for (let i = 0; i < arr.length; i++) {
+      if (id === arr[i].id) {
+        if (occasion === 'del') arr.splice(i, 1);
+        if (occasion === 'important') arr[i].important = !arr[i].important;
+        if (occasion === 'done') arr[i].done = !arr[i].done;
+        break;
+      }
+    }
+  },
+
 };
+
 
 const controller = {
 
@@ -131,8 +147,28 @@ const controller = {
         todoDate,
       });
     });
-  }
+  },
 
+  eventList: function () {
+    const element = document.getElementById('todo__list');
+    element.addEventListener('click', event => {
+      const occasion = event.target.value;
+      const id = event.target.parentNode.id;
+
+      model.editListItem({
+        id,
+        occasion
+      });
+      model.state.countsValue = model.counts();
+
+      view.showTodoList({
+        todoDate: model.state.todoDate,
+      });
+      view.showCount({
+        ...model.state.countsValue,
+      });
+    });
+  },
 };
 
 
@@ -150,6 +186,7 @@ const controller = {
 
     control: function () {
       controller.eventAddButton();
+      controller.eventList();
     },
 
     event: function () {
