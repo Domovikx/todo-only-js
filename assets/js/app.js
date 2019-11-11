@@ -55,9 +55,9 @@ const model = {
 
   state: {
     countsValue: {
-      countItems: 9,
-      countImportant: 6,
-      countDone: 3,
+      countItems: 0,
+      countImportant: 0,
+      countDone: 0,
     },
     searchText: '',
     additionText: '',
@@ -76,7 +76,8 @@ const model = {
 
   loadState: function () {
     if (localStorage.getItem('state')) {
-      this.state = JSON.parse(localStorage.getItem('state'));
+      const state = JSON.parse(localStorage.getItem('state'));
+      this.state = state;
     }
   },
 
@@ -110,16 +111,6 @@ const model = {
 
 const controller = {
 
-  createTestTodoList: function () {
-    const todoDate = model.state.todoDate;
-    todoDate.push(model.createNewTodo('123'));
-    todoDate.push(model.createNewTodo('456'));
-    todoDate.push(model.createNewTodo('789'));
-
-    const counts = model.counts();
-    view.showCount(counts);
-  },
-
   eventAddButton: function () {
     const element = document.getElementById('addition__form');
     element.addEventListener('submit', event => {
@@ -133,7 +124,9 @@ const controller = {
       const todoDate = model.state.todoDate;
       todoDate.unshift(newTodo);
 
-      view.showCount(model.counts());
+      const counts = model.state.countsValue = model.counts();
+
+      view.showCount(counts);
       view.showTodoList({
         todoDate,
       });
@@ -153,18 +146,22 @@ const controller = {
       this.event();
     },
 
-    main: function () {
-
-    },
+    main: function () {},
 
     control: function () {
-      controller.createTestTodoList();
+      controller.eventAddButton();
     },
 
     event: function () {
 
       window.onload = () => {
-        controller.eventAddButton();
+        model.loadState();
+        view.showTodoList({
+          todoDate: model.state.todoDate,
+        });
+        view.showCount({
+          ...model.state.countsValue,
+        });
       }
 
       window.onunload = () => {
