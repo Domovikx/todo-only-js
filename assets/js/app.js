@@ -115,10 +115,30 @@ const controller = {
     todoDate.push(model.createNewTodo('123'));
     todoDate.push(model.createNewTodo('456'));
     todoDate.push(model.createNewTodo('789'));
-    console.log('todoDate :', todoDate);
-  }
 
-  
+    const counts = model.counts();
+    view.showCount(counts);
+  },
+
+  eventAddButton: function () {
+    const element = document.getElementById('addition__form');
+    element.addEventListener('submit', event => {
+      event.preventDefault();
+
+      const elementAdd = document.getElementById('addition__form-add');
+      const text = elementAdd.value;
+      elementAdd.value = '';
+
+      const newTodo = model.createNewTodo(text);
+      const todoDate = model.state.todoDate;
+      todoDate.unshift(newTodo);
+
+      view.showCount(model.counts());
+      view.showTodoList({
+        todoDate,
+      });
+    });
+  }
 
 };
 
@@ -144,13 +164,11 @@ const controller = {
     event: function () {
 
       window.onload = () => {
-        model.loadState();
-        console.log('loadState');
+        controller.eventAddButton();
       }
 
       window.onunload = () => {
         model.saveState();
-        console.log('saveState');
       }
 
     },
