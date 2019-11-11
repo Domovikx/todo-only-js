@@ -1,83 +1,97 @@
-(function app() {
+const view = {
 
-  let state = {
+  showCount: function ({
+    countItems,
+    countImportant,
+    countDone,
+  }) {
+    const element = document.getElementById('counts');
+    element.innerHTML = `${countItems} | ${countImportant} | ${countDone}`;
+  },
+
+  showTodoList: function ({
+    todoDate,
+  }) {
+
+    const element = document.getElementById('todo__list');
+    element.innerHTML = '';
+
+    for (const obj of todoDate) {
+      const text = obj.text;
+      const id = obj.id;
+      let btnImportant = '';
+      let btnDone = '';
+      let textImportant = '';
+      let textDone = '';
+
+      if (obj.important) {
+        btnImportant = 'btn-important-active';
+        textImportant = 'important';
+      } else {
+        btnImportant = 'btn-important';
+      }
+
+      if (obj.done) {
+        btnDone = 'btn-done-active';
+        textDone = 'done';
+      } else {
+        btnDone = 'btn-done';
+      }
+
+      element.innerHTML += `
+       <li class="todo__item item" id=${id}>
+       <p class="item__text ${textImportant} ${textDone}">${text}</p>
+       <button class="btn ${btnImportant}" value="important">important</button>
+       <button class="btn ${btnDone}" value="done">done</button>
+       <button class="btn btn-del" value="del">del</button>
+       </li>
+       `;
+    }
+  },
+};
+
+
+const model = {
+
+  state: {
     countsValue: {
-      countItems: 9,
-      countImportant: 6,
-      countDone: 3,
+      countItems: 0,
+      countImportant: 0,
+      countDone: 0,
     },
     searchText: '',
     additionText: '',
-    todoDate: [
-      createNewTodo('123'),
-      createNewTodo('456'),
-      createNewTodo('7 8 9'),
-    ],
-  }
+    todoDate: [],
+  },
 
+  createNewTodo: function (text) {
+    const doId = () => Math.random().toString(32).substr(2, 16);
+    return {
+      id: doId(),
+      text,
+      important: false,
+      done: false,
+    }
+  },
 
-  window.onload = () => {
+  loadState: function () {
     if (localStorage.getItem('state')) {
-      state = JSON.parse(localStorage.getItem('state'));
-      addition();
-      counts();
-      render(state);
+      const state = JSON.parse(localStorage.getItem('state'));
+      this.state = state;
     }
-  }
+  },
 
-  window.onunload = () => {
-    localStorage.setItem('state', JSON.stringify(state));
-  };
+  saveState: function () {
+    localStorage.setItem('state', JSON.stringify(this.state));
+  },
 
-
-  function addition() {
-    const element = document.getElementById('addition__form');
-    element.addEventListener('submit', eventSubmit);
-
-    function eventSubmit(event) {
-      event.preventDefault();
-      const text = document.getElementById('add');
-      state.todoDate.unshift(createNewTodo(text.value));
-      text.value = '';
-      counts();
-      render(state);
-    }
-  }
-
-
-  function search() {
-    const element = document.getElementById('search__form');
-    element.addEventListener('submit', eventSubmit);
-
-    function eventSubmit(event) {
-      event.preventDefault();
-      const search = document.getElementById('search');
-      if (search.value === '') return render(state);
-      const searchText = search.value.toLowerCase();
-      const filterTodoDate = state.todoDate.filter((obj) => (
-        obj.text
-        .toLowerCase()
-        .indexOf(searchText) !== -1
-      ))
-
-      const filterState = {
-        ...state
-      };
-      filterState.todoDate = filterTodoDate;
-
-      render(filterState);
-    }
-  }
-  search();
-
-
-  function counts() {
-    const arr = state.todoDate;
+  counts: function () {
+    const todoDate = this.state.todoDate;
     let countItems = 0;
     let countImportant = 0;
     let countDone = 0;
 
-    arr.forEach(({
+    todoDate.forEach(({
       important,
       done
     }) => {
@@ -86,95 +100,146 @@
       if (done) countDone++;
     });
 
-    state.countsValue.countItems = countItems;
-    state.countsValue.countImportant = countImportant;
-    state.countsValue.countDone = countDone;
+    return {
+      countItems,
+      countImportant,
+      countDone,
+    }
+  },
+
+  editListItem: function ({
+    id,
+    occasion
+  }) {
+    const arr = this.state.todoDate;
+    for (let i = 0; i < arr.length; i++) {
+      if (id === arr[i].id) {
+        if (occasion === 'del') arr.splice(i, 1);
+        if (occasion === 'important') arr[i].important = !arr[i].important;
+        if (occasion === 'done') arr[i].done = !arr[i].done;
+        break;
+      }
+    }
+  },
+
+  search: function (searchText) {
+    searchText = searchText.toLowerCase();
+    const filterTodo = this.state.todoDate.filter(obj => (
+      obj.text
+      .toLowerCase()
+      .indexOf(searchText) !== -1
+    ));
+
+    return {
+      todoDate: filterTodo,
+    };
   }
+};
 
 
-  function listEvents() {
+const controller = {
+
+  eventAddButton: function () {
+    const element = document.getElementById('addition__form');
+    element.addEventListener('submit', event => {
+      event.preventDefault();
+
+      const elementAdd = document.getElementById('addition__form-add');
+      const text = elementAdd.value;
+      elementAdd.value = '';
+
+      const newTodo = model.createNewTodo(text);
+      const todoDate = model.state.todoDate;
+      todoDate.unshift(newTodo);
+
+      const counts = model.state.countsValue = model.counts();
+
+      view.showCount(counts);
+      view.showTodoList({
+        todoDate,
+      });
+    });
+  },
+
+  eventList: function () {
     const element = document.getElementById('todo__list');
-    element.addEventListener('click', (event) => {
-      const eventValue = event.target.value;
+    element.addEventListener('click', event => {
+      const occasion = event.target.value;
       const id = event.target.parentNode.id;
-      const arr = state.todoDate;
 
-      for (let i = 0; i < arr.length; i++) {
-        if (id === arr[i].id) {
-          if (eventValue === 'del') arr.splice(i, 1);listEvents
-          if (eventValue === 'important') arr[i].important = !arr[i].important;
-          if (eventValue === 'done') arr[i].done = !arr[i].done;
-          counts();
-          render(state);
-          return;
-        }
+      model.editListItem({
+        id,
+        occasion
+      });
+      model.state.countsValue = model.counts();
+
+      view.showTodoList({
+        todoDate: model.state.todoDate,
+      });
+      view.showCount({
+        ...model.state.countsValue,
+      });
+    });
+  },
+
+  eventSearchForm: function () {
+    const element = document.getElementById('search__form');
+    element.addEventListener('submit', event => {
+      event.preventDefault();
+      const searchText = document.getElementById('search').value;
+      const todoDate = model.search(searchText);
+      if (todoDate) {
+        view.showTodoList({
+          ...todoDate,
+        })
       }
     });
-  }
-  listEvents();
-
-
-  function createNewTodo(text) {
-    const doId = () => Math.random().toString(32).substr(2, 16);
-    return {
-      id: doId(),
-      text,
-      important: false,
-      done: false,
-    }
-  }
-
-
-  function render(state) {
-
-    (function counts() {
-      const element = document.getElementById('counts');
-      element.innerHTML = `
-      ${state.countsValue.countItems} | 
-      ${state.countsValue.countImportant} | 
-      ${state.countsValue.countDone}`;
-    })();
-
-
-    (function todo() {
-      const element = document.getElementById('todo__list');
-      const arrTodo = state.todoDate;
-
-      element.innerHTML = '';
-      for (const obj of arrTodo) {
-        const text = obj.text;
-        const id = obj.id;
-        let btnImportant = '';
-        let btnDone = '';
-        let textImportant = '';
-        let textDone = '';
-
-        if (obj.important) {
-          btnImportant = 'btn-important-active';
-          textImportant = 'important';
-        } else {
-          btnImportant = 'btn-important';
-        }
-
-        if (obj.done) {
-          btnDone = 'btn-done-active';
-          textDone = 'done';
-        } else {
-          btnDone = 'btn-done';
-        }
-
-
-        element.innerHTML += `
-         <li class="todo__item item" id=${id}>
-         <p class="item__text ${textImportant} ${textDone}">${text}</p>
-         <button class="btn ${btnImportant}" value="important">important</button>
-         <button class="btn ${btnDone}" value="done">done</button>
-         <button class="btn btn-del" value="del">del</button>
-         </li>
-         `;
+    element.addEventListener('keyup', event => {
+      const value = event.target.value;
+      if (value === '') {
+        view.showTodoList({
+          todoDate: model.state.todoDate,
+        });
       }
-    })();
-  }
-  render(state);
+    });
+  },
+};
 
-})()
+
+(function () {
+
+  const start = {
+
+    init: function () {
+      this.main();
+      this.control();
+      this.event();
+    },
+
+    main: function () {},
+
+    control: function () {
+      controller.eventAddButton();
+      controller.eventList();
+      controller.eventSearchForm();
+    },
+
+    event: function () {
+      window.onload = () => {
+        model.loadState();
+        view.showTodoList({
+          todoDate: model.state.todoDate,
+        });
+        view.showCount({
+          ...model.state.countsValue,
+        });
+      }
+
+      window.onunload = () => {
+        model.saveState();
+      }
+    },
+  };
+  start.init();
+
+})();
